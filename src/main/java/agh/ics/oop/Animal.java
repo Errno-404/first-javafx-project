@@ -1,7 +1,29 @@
 package agh.ics.oop;
 
-public class Animal {
-    private MapDirection animalDirection = MapDirection.NORTH;
+import javax.xml.stream.FactoryConfigurationError;
+
+public class Animal{
+    private MapDirection animalDirection;
+
+    private Vector2d position;
+
+    private IWorldMap map;
+
+   Animal(){
+       this.position = new Vector2d(2, 2);
+       this.animalDirection = MapDirection.NORTH;
+   }
+
+    Animal(IWorldMap map) {
+        this.map = map;
+    }
+
+    Animal(IWorldMap map, Vector2d initialPosition) {
+        this.map = map;
+        this.position = initialPosition;
+    }
+
+    // gettery
 
     public Vector2d getPosition() {
         return position;
@@ -11,10 +33,14 @@ public class Animal {
         return animalDirection;
     }
 
-    private Vector2d position = new Vector2d(2, 2);
 
     public String toString() {
-        return "(" + this.position + ", " + this.animalDirection + ")";
+        return switch (this.animalDirection) {
+            case EAST -> ">";
+            case WEST -> "<";
+            case NORTH -> "^";
+            case SOUTH -> "v";
+        };
     }
 
     public boolean isAt(Vector2d position) {
@@ -28,16 +54,17 @@ public class Animal {
             case FORWARD -> {
                 Vector2d currentPosition = this.position.add(this.animalDirection.toUnitVector());
 
-                if ((currentPosition.follows(new Vector2d(0, 0)))
-                        && (currentPosition.precedes(new Vector2d(4, 4))))
+                if (this.map.canMoveTo(currentPosition)) {
                     this.position = currentPosition;
+                }
             }
             case BACKWARD -> {
                 Vector2d currentPosition = this.position.subtract(this.animalDirection.toUnitVector());
 
-                if ((currentPosition.follows(new Vector2d(0, 0)))
-                        && (currentPosition.precedes(new Vector2d(4, 4))))
+                if (this.map.canMoveTo(currentPosition)) {
                     this.position = currentPosition;
+
+                }
             }
         }
     }

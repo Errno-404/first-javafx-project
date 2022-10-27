@@ -3,20 +3,20 @@ package agh.ics.oop;
 public class World {
     public static void main(String[] arg) {
 
-        Animal dog = new Animal();
-        System.out.println(dog);
-//        dog.move(MoveDirection.RIGHT);
-//        dog.move(MoveDirection.FORWARD);
-//        dog.move(MoveDirection.FORWARD);
-//        dog.move(MoveDirection.FORWARD);
-
-
-        OptionsParser parser = new OptionsParser();
-        MoveDirection[] navigating = parser.parse(arg);
-        for(MoveDirection direction : navigating){
-            dog.move(direction);
-        }
-        System.out.println(dog);
+//        Animal dog = new Animal();
+//        System.out.println(dog);
+////        dog.move(MoveDirection.RIGHT);
+////        dog.move(MoveDirection.FORWARD);
+////        dog.move(MoveDirection.FORWARD);
+////        dog.move(MoveDirection.FORWARD);
+//
+//
+//        OptionsParser parser = new OptionsParser();
+//        MoveDirection[] navigating = parser.parse(arg);
+//        for(MoveDirection direction : navigating){
+//            dog.move(direction);
+//        }
+//        System.out.println(dog);
 
 
         // zad. 10. -> należałoby do każdego pola mapy przypisać wartość odpowiadającą na pytanie, czy pole jest
@@ -30,3 +30,27 @@ public class World {
 //        System.out.println(position1.add(position2));
     }
 }
+
+
+
+// Interfejsy
+// JFrame
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
