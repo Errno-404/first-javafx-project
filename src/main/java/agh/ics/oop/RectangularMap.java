@@ -5,10 +5,11 @@ import java.util.List;
 
 public class RectangularMap implements IWorldMap {
 
-    private int width;
-    private int height;
+    // final check later
+    private final int width;
+    private final int height;
 
-    private List<Animal> animals = new ArrayList<>();
+    public List<Animal> animals = new ArrayList<>();
 
     RectangularMap(int width, int height){
         this.width = width;
@@ -62,9 +63,7 @@ public class RectangularMap implements IWorldMap {
 
     @Override
     public String toString(){
-
-        IWorldMap map = new RectangularMap(this.width, this.height);
-        MapVisualizer board = new MapVisualizer(map);
+        MapVisualizer board = new MapVisualizer(this);
         return board.draw(new Vector2d(0, 0), new Vector2d(this.width, this.height));
     }
 }
