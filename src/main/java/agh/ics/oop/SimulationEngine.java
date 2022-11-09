@@ -3,7 +3,7 @@ package agh.ics.oop;
 public class SimulationEngine implements IEngine{
 
     private final MoveDirection[] moves;
-    private final RectangularMap map;
+    public RectangularMap map;
 
 
     public SimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d[] positions){
@@ -21,7 +21,6 @@ public class SimulationEngine implements IEngine{
     public void run(){
 
         int animalCount = map.animals.size();
-        System.out.println(animalCount);
 
         for(int i = 0; i < moves.length; i++){
             map.animals.get(i % animalCount).move(moves[i]);
