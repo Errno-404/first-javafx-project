@@ -51,11 +51,7 @@ public class Vector2d {
 
         return that.x == this.x && that.y == this.y;
     }
-    // zmiana funkcji hashCode powinna być wystarczająca, gdyż funkcja Objects.hash()
-    // pobiera dwa jedyne pola obiektu klasy wektor i na ich podstawie tworzy hash -
-    // warunek, żeby 2 obiekty, dla których one.equals(two) == True miały identyczny
-    // hashCode jest spełniony, ponieważ jeśli equals zwraca True, to pola x i y
-    // w obu instancjach muszą być identyczne.
+
     @Override
     public int hashCode() {
         return Objects.hash(x, y);

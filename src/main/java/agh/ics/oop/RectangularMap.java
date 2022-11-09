@@ -1,11 +1,14 @@
 package agh.ics.oop;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RectangularMap implements IWorldMap {
 
     private int width;
     private int height;
 
-    private Animal [][] rMap = new Animal[this.width][this.height];
+    private List<Animal> animals = new ArrayList<>();
 
     RectangularMap(int width, int height){
         this.width = width;
@@ -13,12 +16,11 @@ public class RectangularMap implements IWorldMap {
     }
 
 
-
-    // in any of these methods we know if position is correct! (not out of bounds)
-
-    // animal cannot move to given position if it is occupied or out of map range
     @Override
     public boolean canMoveTo(Vector2d position){
+        // obiekt może się przemieścić na pozycję position, kiedy nie jest ona zajęta
+        // oraz kiedy pozycja ta mieści się w zakresie mapy
+
         if(isOccupied(position)){
             return false;
         }
@@ -27,37 +29,35 @@ public class RectangularMap implements IWorldMap {
     }
 
 
-    // assume animal position is within map range
 
     @Override
     public boolean place(Animal animal){
-        int x = animal.getPosition().x;
-        int y = animal.getPosition().y;
+        // zwierze może zostać dodane do mapy, gdy może się na tę pozycję przemieścić
+        // w tym przypadku przemieszczenie to jest z danej pozycji na samą siebie.
 
-        // what if this place is out of bounds?
-        if(!isOccupied(animal.getPosition())){
-            rMap[x][y] = animal;
+        Vector2d checkPosition = animal.getPosition();
+        if(canMoveTo(checkPosition)){
+            animals.add(animal);
             return true;
         }
-
         return false;
     }
 
-    // assume that position is within map range
     @Override
     public boolean isOccupied(Vector2d position){
-        int x = position.x;
-        int y = position.y;
-
-        return rMap[x][y] == null;
+        // jeśli obiekt na position nie jest nullem, tzn, że jest okupowany
+        return objectAt(position) != null;
     }
 
-    // assume that position is within map range
+
     @Override
     public Object objectAt(Vector2d position){
-        int x = position.x;
-        int y = position.y;
-        return rMap[x][y];
+        for(Animal animal: this.animals){
+            if(animal.getPosition().equals(position)){
+                return animal;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -65,5 +65,6 @@ public class RectangularMap implements IWorldMap {
 
         IWorldMap map = new RectangularMap(this.width, this.height);
         MapVisualizer board = new MapVisualizer(map);
+        return board.draw(new Vector2d(0, 0), new Vector2d(this.width, this.height));
     }
 }
