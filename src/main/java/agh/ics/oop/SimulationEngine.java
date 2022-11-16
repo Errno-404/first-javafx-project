@@ -1,18 +1,22 @@
 package agh.ics.oop;
 
+
 public class SimulationEngine implements IEngine{
 
+//    private final List<Animal> animals = new ArrayList<>();
     private final MoveDirection[] moves;
-    public RectangularMap map;
+//    public IWorldMap map;
 
+    public AbstractWorldMap map;
 
     public SimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d[] positions){
         this.moves = moves;
-        this.map = (RectangularMap) map;
+        this.map =  (AbstractWorldMap) map;
 
         for(Vector2d position : positions){
             Animal newAnimal = new Animal(this.map, position);
             this.map.place(newAnimal);
+//            this.animals.add(newAnimal);
         }
     }
 
@@ -20,11 +24,12 @@ public class SimulationEngine implements IEngine{
     @Override
     public void run(){
 
-        int animalCount = map.animals.size();
 
+        int animalCount = this.map.animals.size();
         for(int i = 0; i < moves.length; i++){
-            map.animals.get(i % animalCount).move(moves[i]);
-            System.out.print(map);
+            this.map.animals.get(i% animalCount).move(moves[i]);
+//            this.animals.get(i % animalCount).move(moves[i]);
+            System.out.println(this.map);
         }
     }
 }
