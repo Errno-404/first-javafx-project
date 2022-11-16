@@ -64,8 +64,8 @@ public class GrassField extends AbstractWorldMap {
         return null;
     }
 
-    // dynamicSizing do poprawy, bo coś mi tu nie działa :/
-    // reszta OK!
+    // jeśli dobrze zrozumiałem, to o to chodziło w dynamicznym obliczaniu rozmiaru mapy - zwierzę chce wyjść
+    // poza dotychczasowe granice, to może to zrobić, za co odpowiada funkcja dynamicSizing()
     protected void dynamicSizing() {
         for (Animal animal : animals) {
             this.rightCorner = animal.getPosition().upperRight(this.rightCorner);

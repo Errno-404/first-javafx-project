@@ -24,7 +24,8 @@ public class SimulationEngine implements IEngine{
     @Override
     public void run(){
 
-
+        System.out.println("Initial map:");
+        System.out.println(this.map);
         int animalCount = this.map.animals.size();
         for(int i = 0; i < moves.length; i++){
             this.map.animals.get(i% animalCount).move(moves[i]);
