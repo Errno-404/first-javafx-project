@@ -1,6 +1,8 @@
 package agh.ics.oop;
 
 import javax.xml.stream.FactoryConfigurationError;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Animal{
     private MapDirection animalDirection = MapDirection.NORTH;
@@ -8,6 +10,15 @@ public class Animal{
     private Vector2d position;
 
     private IWorldMap map;
+
+    public List<IPositionChangeObserver> observers = new ArrayList<>();
+
+
+    // for tests:
+
+    Animal(Vector2d initialPos){
+        this.position = initialPos;
+    }
 
     Animal(IWorldMap map) {
         this.map = map;
@@ -50,6 +61,7 @@ public class Animal{
                 Vector2d newPosition = this.position.add(this.animalDirection.toUnitVector());
 
                 if (this.map.canMoveTo(newPosition)) {
+                    this.positionChanged(this.position, newPosition);
                     this.position = newPosition;
                 }
             }
@@ -57,10 +69,23 @@ public class Animal{
                 Vector2d newPosition = this.position.subtract(this.animalDirection.toUnitVector());
 
                 if (this.map.canMoveTo(newPosition)) {
+                    this.positionChanged(this.position, newPosition);
                     this.position = newPosition;
 
                 }
             }
         }
+    }
+
+    public void addObserver(IPositionChangeObserver observer){
+        this.observers.add(observer);
+    }
+
+    public void removeObserver(IPositionChangeObserver observer){
+        this.observers.remove(observer);
+    }
+
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition){
+        this.observers.forEach((obs) -> obs.positionChanged(oldPosition, newPosition));
     }
 }
