@@ -13,35 +13,44 @@ public class GrassField extends AbstractWorldMap {
         this.grassCount = grassCount;
 
 
-        // ustalamy maxRange na n = sqrt(10 * grassCount)
-        int n = (int) Math.sqrt(10 * grassCount);
-
-        int x;
-        int y;
-
-        // mój pierwszy do-while w życiu
-
         for (int i = 0; i < grassCount; i++) {
-            do {
-                x = (int) (Math.random() * n);
-                y = (int) (Math.random() * n);
 
-                Grass newGrass = new Grass(new Vector2d(x, y));
-            } while (grasses.containsKey(new Vector2d(x, y)));
-
-
-            Vector2d pos = new Vector2d(x, y);
-            grasses.put(pos, new Grass(pos));
+            Vector2d pos = pickOneRandomGrass();
 
             this.mapBoundary.addCordsXY(pos);
         }
 
     }
 
+    private Vector2d pickOneRandomGrass(){
+        int x;
+        int y;
+        int n = (int) Math.sqrt(10 * this.grassCount);
+
+        Vector2d grassPosition;
+        do {
+            x = (int) (Math.random() * n);
+            y = (int) (Math.random() * n);
+
+            grassPosition = new Vector2d(x, y);
+        } while (grasses.containsKey(grassPosition));
+
+
+        Grass newGrass = new Grass(grassPosition);
+        this.grasses.put(grassPosition, newGrass);
+        return grassPosition;
+    }
 
     @Override
     public boolean canMoveTo(Vector2d position) {
-        return !(objectAt(position) instanceof Animal); // animal może wejść na Grass
+        if(objectAt(position) instanceof  Grass){
+            this.grasses.remove(position);
+            Vector2d newGrassPosition = pickOneRandomGrass();
+
+            // observer-like call
+            this.mapBoundary.positionChanged(position, newGrassPosition);
+        }
+        return !(objectAt(position) instanceof Animal);
     }
 
     @Override

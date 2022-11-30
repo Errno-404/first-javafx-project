@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 
 public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
+
     protected HashMap<Vector2d, Animal> animals = new HashMap<>();
 
     protected MapBoundary mapBoundary = new MapBoundary();
@@ -14,15 +15,23 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     @Override
     public abstract boolean canMoveTo(Vector2d position);
 
+    // TODO: pytanie - czy zmienić typ na void? Nieładny jest ten return tylko w przypadku powodzenia,
+    //  a brak false w.p.p
+
     @Override
     public boolean place(Animal animal){
+
         Vector2d animalPosition = animal.getPosition();
+
         if(canMoveTo(animalPosition)){
+
+
             this.animals.put(animalPosition, animal);
             this.mapBoundary.addCordsXY(animalPosition);
 
             animal.addObserver(this);
             animal.addObserver(this.mapBoundary);
+
             return true;
         }
         throw new IllegalArgumentException("position " + animalPosition + " is already occupied!");

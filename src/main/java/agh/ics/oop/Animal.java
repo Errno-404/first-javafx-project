@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Animal{
+
     private MapDirection animalDirection = MapDirection.NORTH;
 
     private Vector2d position;
@@ -14,22 +15,11 @@ public class Animal{
     public List<IPositionChangeObserver> observers = new ArrayList<>();
 
 
-    // for tests:
-
-    Animal(Vector2d initialPos){
-        this.position = initialPos;
-    }
-
-    Animal(IWorldMap map) {
-        this.map = map;
-    }
-
     Animal(IWorldMap map, Vector2d initialPosition) {
         this.map = map;
         this.position = initialPosition;
     }
 
-    // gettery
 
     public Vector2d getPosition() {
         return position;
@@ -38,6 +28,7 @@ public class Animal{
     public MapDirection getAnimalDirection() {
         return animalDirection;
     }
+
 
 
     public String toString() {
