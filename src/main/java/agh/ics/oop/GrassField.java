@@ -5,8 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class GrassField extends AbstractWorldMap {
-
     private final int grassCount;
+
+
 
 //    protected List<Grass> grasses = new ArrayList<>();
 
@@ -16,7 +17,6 @@ public class GrassField extends AbstractWorldMap {
     public GrassField(int grassCount) {
         this.grassCount = grassCount;
 
-        // TODO: check this
         this.rightCorner = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
 
         // ustalamy maxRange na n = sqrt(10 * grassCount)
@@ -38,6 +38,9 @@ public class GrassField extends AbstractWorldMap {
 
             Vector2d pos = new Vector2d(x, y);
             grasses.put(pos, new Grass(pos));
+
+            // changes here
+//            this.mapBoundary.addCordsXY(pos);
 
             this.rightCorner = pos.upperRight(this.rightCorner);
             this.leftCorner = pos.lowerLeft(this.leftCorner);

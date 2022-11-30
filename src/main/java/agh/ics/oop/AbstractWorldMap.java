@@ -8,6 +8,8 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
 
     protected HashMap<Vector2d, Animal> animals = new HashMap<>();
 
+//    protected MapBoundary mapBoundary;
+
 
     //TODO: fix corner values
     protected Vector2d leftCorner = new Vector2d(0, 0);
@@ -21,12 +23,13 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
 
     @Override
     public boolean place(Animal animal){
-        if(canMoveTo(animal.getPosition())){
-//            this.animals.add(animal);
-            this.animals.put(animal.getPosition(), animal);
+        Vector2d animalPosition = animal.getPosition();
+        if(canMoveTo(animalPosition)){
+            this.animals.put(animalPosition, animal);
+//            this.mapBoundary.addCordsXY(animalPosition);
             return true;
         }
-        return false;
+        throw new IllegalArgumentException("position " + animalPosition + " is already occupied!");
     }
 
     @Override
