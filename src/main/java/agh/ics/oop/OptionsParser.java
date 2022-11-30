@@ -14,7 +14,7 @@ public class OptionsParser {
 
         int i = 0;
         for(String arg : args){
-            MoveDirection dir = MoveDirection.NONE;
+            MoveDirection dir;
             switch(arg){
                 case "f", "forward" -> dir = MoveDirection.FORWARD;
                 case "b", "backward" -> dir = MoveDirection.BACKWARD;

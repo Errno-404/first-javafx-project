@@ -4,29 +4,25 @@ import java.util.HashMap;
 
 
 public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
-//    public List<Animal> animals = new ArrayList<>();
-
     protected HashMap<Vector2d, Animal> animals = new HashMap<>();
 
-//    protected MapBoundary mapBoundary;
+    protected MapBoundary mapBoundary = new MapBoundary();
 
-
-    //TODO: fix corner values
-    protected Vector2d leftCorner = new Vector2d(0, 0);
+    protected Vector2d leftCorner;
     protected Vector2d rightCorner;
-
 
     @Override
     public abstract boolean canMoveTo(Vector2d position);
-
-
 
     @Override
     public boolean place(Animal animal){
         Vector2d animalPosition = animal.getPosition();
         if(canMoveTo(animalPosition)){
             this.animals.put(animalPosition, animal);
-//            this.mapBoundary.addCordsXY(animalPosition);
+            this.mapBoundary.addCordsXY(animalPosition);
+
+            animal.addObserver(this);
+            animal.addObserver(this.mapBoundary);
             return true;
         }
         throw new IllegalArgumentException("position " + animalPosition + " is already occupied!");

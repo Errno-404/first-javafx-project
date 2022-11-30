@@ -10,14 +10,17 @@ public class MapBoundary implements IPositionChangeObserver {
         cordsY.add(objPosition);
     }
 
-    // zakładam że już są wstawiane jako posortowane
-    private TreeSet<Vector2d> cordsX = new TreeSet<>(Comparator.comparing(Vector2d::getX));
-    private TreeSet<Vector2d> cordsY = new TreeSet<>(Comparator.comparing(Vector2d::getY));
+
+    public TreeSet<Vector2d> cordsX = new TreeSet<>(Comparator.comparing(Vector2d::getX).thenComparing(Vector2d::getY));
+    public TreeSet<Vector2d> cordsY = new TreeSet<>(Comparator.comparing(Vector2d::getY).thenComparing(Vector2d::getX));
 
 
 
     @Override
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
-        //TODO
+        cordsX.remove(oldPosition);
+        cordsY.remove(oldPosition);
+        cordsX.add(newPosition);
+        cordsY.add(newPosition);
     }
 }

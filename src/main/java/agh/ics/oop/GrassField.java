@@ -7,17 +7,11 @@ import java.util.List;
 public class GrassField extends AbstractWorldMap {
     private final int grassCount;
 
-
-
-//    protected List<Grass> grasses = new ArrayList<>();
-
     protected HashMap<Vector2d, Grass> grasses = new HashMap<>();
-
 
     public GrassField(int grassCount) {
         this.grassCount = grassCount;
 
-        this.rightCorner = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
 
         // ustalamy maxRange na n = sqrt(10 * grassCount)
         int n = (int) Math.sqrt(10 * grassCount);
@@ -39,12 +33,7 @@ public class GrassField extends AbstractWorldMap {
             Vector2d pos = new Vector2d(x, y);
             grasses.put(pos, new Grass(pos));
 
-            // changes here
-//            this.mapBoundary.addCordsXY(pos);
-
-            this.rightCorner = pos.upperRight(this.rightCorner);
-            this.leftCorner = pos.lowerLeft(this.leftCorner);
-
+            this.mapBoundary.addCordsXY(pos);
         }
 
     }
@@ -64,14 +53,9 @@ public class GrassField extends AbstractWorldMap {
         }
     }
 
-    // jeśli dobrze zrozumiałem, to o to chodziło w dynamicznym obliczaniu rozmiaru mapy - zwierzę chce wyjść
-    // poza dotychczasowe granice, to może to zrobić, za co odpowiada funkcja dynamicSizing()
+
     protected void dynamicSizing() {
-        this.animals.forEach(
-                (key, value) -> {
-                    Vector2d pos = value.getPosition();
-                    this.rightCorner = pos.upperRight(this.rightCorner);
-                    this.leftCorner = pos.lowerLeft(this.leftCorner);
-                });
+        this.leftCorner = this.mapBoundary.cordsX.first().lowerLeft(this.mapBoundary.cordsY.first());
+        this.rightCorner = this.mapBoundary.cordsX.last().upperRight(this.mapBoundary.cordsY.last());
     }
 }
