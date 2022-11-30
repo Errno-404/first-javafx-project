@@ -9,8 +9,8 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
 
     protected MapBoundary mapBoundary = new MapBoundary();
 
-    protected Vector2d leftCorner;
-    protected Vector2d rightCorner;
+    public Vector2d leftCorner;
+    public Vector2d rightCorner;
 
     @Override
     public abstract boolean canMoveTo(Vector2d position);
