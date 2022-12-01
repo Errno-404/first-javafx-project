@@ -2,7 +2,7 @@ package agh.ics.oop;
 
 import java.util.Objects;
 
-public class Grass {
+public class Grass implements IMapElement{
     private final Vector2d position;
     public Grass(Vector2d position){
         this.position = position;
@@ -30,5 +30,16 @@ public class Grass {
     @Override
     public int hashCode() {
         return Objects.hash(position);
+    }
+
+    // IMapElement
+    @Override
+    public String getImageURL(){
+        return "grass.png";
+    }
+
+    @Override
+    public String getElementLabel(){
+        return "trawa";
     }
 }

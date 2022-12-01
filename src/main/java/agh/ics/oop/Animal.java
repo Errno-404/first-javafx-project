@@ -4,7 +4,7 @@ import javax.xml.stream.FactoryConfigurationError;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Animal{
+public class Animal implements IMapElement{
 
     private MapDirection animalDirection = MapDirection.NORTH;
 
@@ -15,7 +15,7 @@ public class Animal{
     public List<IPositionChangeObserver> observers = new ArrayList<>();
 
 
-    Animal(IWorldMap map, Vector2d initialPosition) {
+    public Animal(IWorldMap map, Vector2d initialPosition) {
         this.map = map;
         this.position = initialPosition;
     }
@@ -78,5 +78,23 @@ public class Animal{
 
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition){
         this.observers.forEach((obs) -> obs.positionChanged(oldPosition, newPosition));
+    }
+
+
+    // IMapElement
+
+    @Override
+    public String getImageURL(){
+        return switch (this.animalDirection){
+            case NORTH -> "up.png";
+            case SOUTH -> "down.png";
+            case WEST -> "left.png";
+            case EAST -> "right.png";
+        };
+    }
+
+    @Override
+    public String getElementLabel(){
+        return this.position.toString();
     }
 }

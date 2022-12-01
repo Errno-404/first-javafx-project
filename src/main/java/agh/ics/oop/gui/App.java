@@ -4,6 +4,8 @@ import agh.ics.oop.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
@@ -11,16 +13,23 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
-public class App extends Application {
+public class App extends Application{
 
     public AbstractWorldMap field;
 
     public int windowWidth = 600;
     public int windowHeight = 800;
-    public int gridDimension = 30;
+    public int gridDimension = 40;
+
+    private GridPane gridPane;
+    private Vector2d leftCorner;
+    private Vector2d rightCorner;
 
     @Override
-    public void start(Stage primaryStage){
+    public void start(Stage primaryStage) {
+
+
+
 
         try {
 
@@ -34,10 +43,11 @@ public class App extends Application {
 
             engine.run();
 
+
+            this.leftCorner = field.leftCorner;
+            this.rightCorner = field.rightCorner;
             Scene scene = new Scene(
                     draw(
-                            field.leftCorner,
-                            field.rightCorner
                     ),
                     windowWidth,
                     windowHeight
@@ -56,80 +66,82 @@ public class App extends Application {
 
     }
 
-    public GridPane draw(Vector2d leftCorner, Vector2d rightCorner){
-        GridPane gridPane = new GridPane();
+    public GridPane draw() {
+        this.gridPane = new GridPane();
+
         gridPane.setGridLinesVisible(true);
 
-        int maxWidth = rightCorner.getX() - leftCorner.getX() + 1;
-        int maxHeight = rightCorner.getY() - leftCorner.getY() + 1;
+        setupGrid();
 
-        System.out.print(maxWidth);
-        System.out.print(maxHeight);
+        generateGridOnce();
 
-        // Size of the grid
+        return gridPane;
+    }
 
-        for(int i = 0; i<=maxWidth;i++){
-            gridPane.getColumnConstraints().add(new ColumnConstraints(gridDimension));
+    public void setupGrid() {
+        int maxWidth = this.rightCorner.getX() - this.leftCorner.getX() + 1;
+        int maxHeight = this.rightCorner.getY() - this.leftCorner.getY() + 1;
+
+
+        // SIZING THE GRID
+        for (int i = 0; i <= maxWidth; i++) {
+            this.gridPane.getColumnConstraints().add(new ColumnConstraints(this.gridDimension));
         }
-        for(int i = 0; i <= maxHeight;i++){
-            gridPane.getRowConstraints().add(new RowConstraints(gridDimension));
+        for (int i = 0; i <= maxHeight; i++) {
+            this.gridPane.getRowConstraints().add(new RowConstraints(this.gridDimension));
         }
 
-        // End size of the grid
+        this.windowHeight = gridDimension * (maxHeight + 1) * 2;
+        this.windowWidth = gridDimension * (maxWidth + 1) * 2;
+        // END OF SIZING
 
 
-        // Header section
-
+        // HEADER PRINTING
         Label xy = new Label("x\\y");
-        gridPane.add(xy, 0, 0);
+        this.gridPane.add(xy, 0, 0);
+        GridPane.setHalignment(xy, HPos.CENTER);
+        GridPane.setValignment(xy, VPos.CENTER);
+        gridPane.setAlignment(Pos.CENTER);
 
-        for(int i = 1; i <= maxWidth; i++){
-            Label label = new Label(String.valueOf(leftCorner.x + i - 1));
+        for (int i = 1; i <= maxWidth; i++) {
+            Label label = new Label(String.valueOf(this.leftCorner.x + i - 1));
             GridPane.setHalignment(label, HPos.CENTER);
-            gridPane.add(label, i, 0);
+            GridPane.setValignment(label, VPos.CENTER);
+            this.gridPane.add(label, i, 0);
         }
 
-        for(int i = 1; i<= maxHeight; i++){
-            Label label = new Label(String.valueOf(maxHeight - leftCorner.y - i));
+        for (int i = 1; i <= maxHeight; i++) {
+            Label label = new Label(String.valueOf(maxHeight - this.leftCorner.y - i));
             GridPane.setHalignment(label, HPos.CENTER);
-            gridPane.add(label, 0, i);
+            GridPane.setValignment(label, VPos.CENTER);
+            this.gridPane.add(label, 0, i);
         }
-
         // END OF HEADER SECTION
+    }
 
 
-        for(int i = 1; i <= maxHeight; i ++){
-            int y = rightCorner.y - i + 1;
-            for(int j = 1; j <= maxWidth; j++){
-                int x = leftCorner.x + j - 1;
+    public void generateGridOnce() {
+        int maxWidth = this.rightCorner.getX() - this.leftCorner.getX() + 1;
+        int maxHeight = this.rightCorner.getY() - this.leftCorner.getY() + 1;
 
-                String content;
+
+        for (int i = 1; i <= maxHeight; i++) {
+            int y = this.rightCorner.y - i + 1;
+            for (int j = 1; j <= maxWidth; j++) {
+                int x = this.leftCorner.x + j - 1;
+
                 Vector2d currentPosition = new Vector2d(x, y);
-                if(field.isOccupied(currentPosition)){
+                if (field.isOccupied(currentPosition)) {
                     Object object = this.field.objectAt(currentPosition);
 
-                    if(object != null){
-                        content = object.toString();
-                    }
-                    else{
-                        content = " ";
-                    }
-                    }else{
-                    content = " ";
+                    GuiElementBox box = new GuiElementBox((IMapElement) object);
+                    gridPane.add(box.vbox, j, i,1,1);
+
                 }
-
-                Label label = new Label(content);
-                GridPane.setHalignment(label, HPos.CENTER);
-
-                gridPane.add(label, j, i, 1,1);
-
 
             }
         }
-        this.windowHeight = gridDimension * (maxHeight + 1);
-        this.windowWidth = gridDimension * (maxWidth + 1);
 
-        return gridPane;
     }
 
 }
