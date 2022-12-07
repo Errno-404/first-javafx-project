@@ -63,7 +63,7 @@ public class GrassField extends AbstractWorldMap {
     }
 
 
-    protected void dynamicSizing() {
+    public void dynamicSizing() {
         this.leftCorner = this.mapBoundary.cordsX.first().lowerLeft(this.mapBoundary.cordsY.first());
         this.rightCorner = this.mapBoundary.cordsX.last().upperRight(this.mapBoundary.cordsY.last());
     }

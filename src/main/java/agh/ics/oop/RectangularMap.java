@@ -15,7 +15,7 @@ public class RectangularMap extends AbstractWorldMap {
                 && !(objectAt(position) instanceof  Animal); // animal może wejść na Grass
     }
     @Override
-    protected void dynamicSizing() {
+    public void dynamicSizing() {
         // do nothing
     }
 }

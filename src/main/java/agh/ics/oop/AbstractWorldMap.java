@@ -48,7 +48,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
         return animals.getOrDefault(position, null);
     }
 
-    protected abstract void dynamicSizing();
+    public abstract void dynamicSizing();
 
     @Override
     public String toString(){
@@ -62,6 +62,14 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
         Animal change = animals.get(oldPosition);
         animals.remove(oldPosition);
         animals.put(newPosition, change);
+    }
+
+    public Vector2d getLeftCorner() {
+        return leftCorner;
+    }
+
+    public Vector2d getRightCorner(){
+        return rightCorner;
     }
 }
 
